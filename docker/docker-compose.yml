@@ -1,0 +1,43 @@
+version: '3.1'
+
+services:
+
+  php-fpm:
+    build:
+      context: php7-fpm
+      args:
+        TIMEZONE: ${TIMEZONE}
+    ports:
+      - '9000:9000'
+    volumes:
+      - ${APP_PATH}:/app
+    working_dir: /app
+    container_name: 'php-fpm'
+#    links:
+#      - postgres
+
+  nginx:
+    #image: nginx:1.15.0
+    build: nginx
+    container_name: 'nginx'
+    working_dir: /app
+    ports:
+      - '8080:80'
+    volumes:
+      - ${APP_PATH}:/app
+      - ./logs/nginx/:/var/log/nginx
+
+  postgres:
+    image: postgres:9.6
+    ports:
+      - '5433:5432'
+    container_name: 'postgresql'
+    working_dir: /app
+    restart: always
+    environment:
+      POSTGRES_DB: 'db_name'
+      POSTGRES_USER: 'db_user'
+      POSTGRES_PASSWORD: 'db_pass'
+
+volumes:
+  postgresql:
