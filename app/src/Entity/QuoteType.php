@@ -2,15 +2,15 @@
 
 namespace App\Entity;
 
-use App\Repository\QuotesTypeRepository;
+use App\Repository\QuoteTypeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=QuotesTypeRepository::class)
+ * @ORM\Entity(repositoryClass=QuoteTypeRepository::class)
  */
-class QuotesType
+class QuoteType
 {
     /**
      * @ORM\Id
@@ -25,13 +25,13 @@ class QuotesType
     private $name;
 
     /**
-     * @ORM\OneToMany(targetEntity=Quotes::class, mappedBy="type_id")
+     * @ORM\OneToMany(targetEntity=Quote::class, mappedBy="type_id")
      */
-    private $quotes;
+    private $quote;
 
     public function __construct()
     {
-        $this->quotes = new ArrayCollection();
+        $this->quote = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -52,27 +52,27 @@ class QuotesType
     }
 
     /**
-     * @return Collection|Quotes[]
+     * @return Collection|Quote[]
      */
-    public function getQuotes(): Collection
+    public function getQuote(): Collection
     {
-        return $this->quotes;
+        return $this->quote;
     }
 
-    public function addQuote(Quotes $quote): self
+    public function addQuote(Quote $quote): self
     {
-        if (!$this->quotes->contains($quote)) {
-            $this->quotes[] = $quote;
+        if (!$this->quote->contains($quote)) {
+            $this->quote[] = $quote;
             $quote->setTypeId($this);
         }
 
         return $this;
     }
 
-    public function removeQuote(Quotes $quote): self
+    public function removeQuote(Quote $quote): self
     {
-        if ($this->quotes->contains($quote)) {
-            $this->quotes->removeElement($quote);
+        if ($this->quote->contains($quote)) {
+            $this->quote->removeElement($quote);
             // set the owning side to null (unless already changed)
             if ($quote->getTypeId() === $this) {
                 $quote->setTypeId(null);

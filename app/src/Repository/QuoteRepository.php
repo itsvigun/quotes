@@ -2,25 +2,25 @@
 
 namespace App\Repository;
 
-use App\Entity\Quotes;
+use App\Entity\Quote;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @method Quotes|null find($id, $lockMode = null, $lockVersion = null)
- * @method Quotes|null findOneBy(array $criteria, array $orderBy = null)
- * @method Quotes[]    findAll()
- * @method Quotes[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Quote|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Quote|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Quote[]    findAll()
+ * @method Quote[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class QuotesRepository extends ServiceEntityRepository
+class QuoteRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Quotes::class);
+        parent::__construct($registry, Quote::class);
     }
 
     // /**
-    //  * @return Quotes[] Returns an array of Quotes objects
+    //  * @return Quote[] Returns an array of Quote objects
     //  */
     /*
     public function findByExampleField($value)
@@ -37,7 +37,7 @@ class QuotesRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?Quotes
+    public function findOneBySomeField($value): ?Quote
     {
         return $this->createQueryBuilder('q')
             ->andWhere('q.exampleField = :val')

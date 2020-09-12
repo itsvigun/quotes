@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\QuotesRepository;
+use App\Repository\QuoteRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=QuotesRepository::class)
+ * @ORM\Entity(repositoryClass=QuoteRepository::class)
  */
-class Quotes
+class Quote
 {
     /**
      * @ORM\Id
@@ -18,13 +18,13 @@ class Quotes
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Author::class, inversedBy="quotes")
+     * @ORM\ManyToOne(targetEntity=Author::class, inversedBy="quote")
      * @ORM\JoinColumn(nullable=false)
      */
     private $author_id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=QuotesType::class, inversedBy="quotes")
+     * @ORM\ManyToOne(targetEntity=QuoteType::class, inversedBy="quote")
      * @ORM\JoinColumn(nullable=false)
      */
     private $type_id;
@@ -51,12 +51,12 @@ class Quotes
         return $this;
     }
 
-    public function getTypeId(): ?QuotesType
+    public function getTypeId(): ?QuoteType
     {
         return $this->type_id;
     }
 
-    public function setTypeId(?QuotesType $type_id): self
+    public function setTypeId(?QuoteType $type_id): self
     {
         $this->type_id = $type_id;
 

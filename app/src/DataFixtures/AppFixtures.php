@@ -3,8 +3,8 @@
 namespace App\DataFixtures;
 
 use App\Entity\Author;
-use App\Entity\Quotes;
-use App\Entity\QuotesType;
+use App\Entity\Quote;
+use App\Entity\QuoteType;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
@@ -20,17 +20,17 @@ class AppFixtures extends Fixture
     {
         $this->setManager($manager);
 
-        $this->generateQuotesTypes(self::AUTHORS_COUNT);
+        $this->generateQuoteTypes(self::AUTHORS_COUNT);
         $this->generateAuthors(self::QUOTES_TYPES_COUNT);
         $this->getManager()->flush();
 
-        $this->generateQuotes(self::QUOTES_COUNT);
+        $this->generateQuote(self::QUOTES_COUNT);
         $this->getManager()->flush();
     }
 
-    public function generateQuotesTypes(int $count) {
+    public function generateQuoteTypes(int $count) {
         for ($i = 0; $i < $count; $i++) {
-            $type = new QuotesType();
+            $type = new QuoteType();
             $type->setName('QT_name_' . $i);
             $this->getManager()->persist($type);
         }
@@ -45,10 +45,10 @@ class AppFixtures extends Fixture
         }
     }
 
-    public function generateQuotes(int $count) {
+    public function generateQuote(int $count) {
         $manager = $this->getManager();
 
-        $typesRepository = $manager->getRepository(QuotesType::class);
+        $typesRepository = $manager->getRepository(QuoteType::class);
         $types = $typesRepository->findAll();
         $typesMaxIndex = count($types) - 1;
 
@@ -57,7 +57,7 @@ class AppFixtures extends Fixture
         $authorsMaxIndex = count($authors) - 1;
 
         for ($i = 0; $i < $count; $i++) {
-            $quote = new Quotes();
+            $quote = new Quote();
             $quote->setText('Q_text_' . $i);
 
             $typeIndex = random_int(0, $typesMaxIndex);
