@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\QuoteRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=QuoteRepository::class)
@@ -14,23 +15,27 @@ class Quote
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"quote_one"})
      */
     private $id;
 
     /**
      * @ORM\ManyToOne(targetEntity=Author::class, inversedBy="quote")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"quote_one"})
      */
     private $author_id;
 
     /**
      * @ORM\ManyToOne(targetEntity=QuoteType::class, inversedBy="quote")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"quote_one"})
      */
     private $type_id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"quote_one"})
      */
     private $text;
 
