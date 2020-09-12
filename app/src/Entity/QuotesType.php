@@ -25,22 +25,7 @@ class QuotesType
     private $name;
 
     /**
-     * @ORM\Column(type="integer")
-     */
-    private $author_id;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $type_id;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $text;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Quotes::class, mappedBy="type_id", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Quotes::class, mappedBy="type_id")
      */
     private $quotes;
 
@@ -62,42 +47,6 @@ class QuotesType
     public function setName(string $name): self
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    public function getAuthorId(): ?int
-    {
-        return $this->author_id;
-    }
-
-    public function setAuthorId(int $author_id): self
-    {
-        $this->author_id = $author_id;
-
-        return $this;
-    }
-
-    public function getTypeId(): ?int
-    {
-        return $this->type_id;
-    }
-
-    public function setTypeId(int $type_id): self
-    {
-        $this->type_id = $type_id;
-
-        return $this;
-    }
-
-    public function getText(): ?string
-    {
-        return $this->text;
-    }
-
-    public function setText(string $text): self
-    {
-        $this->text = $text;
 
         return $this;
     }
