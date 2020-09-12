@@ -1,7 +1,15 @@
 # See https://github.com/docker-library/php/blob/master/7.1/fpm/Dockerfile
 #FROM otezvikentiy/php7.2-fpm:0.0.11
-FROM php:7.4-fpm
+FROM php:7.4.1-apache
+RUN apt-get update && apt-get install -y libpq-dev
+RUN docker-php-ext-install pgsql pdo pdo_pgsql
+
+#FROM php:7.4-fpm
+
 ARG TIMEZONE
+
+RUN apt-get update && apt-get install -y \
+       vim
 
 # Set timezone
 RUN ln -snf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime && echo ${TIMEZONE} > /etc/timezone \
