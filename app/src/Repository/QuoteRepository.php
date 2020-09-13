@@ -2,9 +2,13 @@
 
 namespace App\Repository;
 
+use App\Entity\Author;
 use App\Entity\Quote;
+use App\Entity\QuoteType;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * @method Quote|null find($id, $lockMode = null, $lockVersion = null)
@@ -14,37 +18,56 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class QuoteRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    private $manager;
+
+    public function __construct(ManagerRegistry $registry, EntityManagerInterface $manager)
     {
         parent::__construct($registry, Quote::class);
+        $this->manager = $manager;
     }
 
-    // /**
-    //  * @return Quote[] Returns an array of Quote objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function remove(Quote $quote)
     {
-        return $this->createQueryBuilder('q')
-            ->andWhere('q.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('q.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        $this->manager->remove($quote);
+        $this->manager->flush();
     }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?Quote
+    public function saveQuote($authorId, $typeId, $text)
     {
-        return $this->createQueryBuilder('q')
-            ->andWhere('q.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        $quote = new Quote();
+        $author = $this->manager->getRepository(Author::class)->getAuthor($authorId);
+        $type = $this->manager->getRepository(QuoteType::class)->getType($typeId);
+
+        $quote->setAuthor($author)
+            ->setType($type)
+            ->setText($text);
+
+        $this->manager->persist($quote);
+        $this->manager->flush();
     }
-    */
+
+    public function editQuote($quoteId, $authorId, $typeId, $text)
+    {
+        $quote = $this->findOneBy(['id' => $quoteId]);
+        if (!$quote) {
+            throw new NotFoundHttpException('Quote is not found');
+        }
+
+        if ($authorId) {
+            $author = $this->manager->getRepository(Author::class)->getAuthor($authorId);
+            $quote->setAuthor($author);
+        }
+        if ($typeId) {
+            $type = $this->manager->getRepository(QuoteType::class)->getType($typeId);
+            $quote->setType($type);
+        }
+        if ($text) {
+            $quote->setText($text);
+        }
+
+        $this->manager->persist($quote);
+        $this->manager->flush();
+
+        return $quote;
+    }
 }

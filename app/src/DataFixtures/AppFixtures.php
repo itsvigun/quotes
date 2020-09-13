@@ -62,11 +62,11 @@ class AppFixtures extends Fixture
 
             $typeIndex = random_int(0, $typesMaxIndex);
             $type = $types[$typeIndex];
-            $quote->setTypeId($type);
+            $quote->setType($type);
 
             $authorIndex = random_int(0, $authorsMaxIndex);
             $author = $authors[$authorIndex];
-            $quote->setAuthorId($author);
+            $quote->setAuthor($author);
 
             $manager->persist($quote);
         }

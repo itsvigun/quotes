@@ -20,52 +20,44 @@ class Quote
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Author::class, inversedBy="quote")
-     * @ORM\JoinColumn(nullable=false)
-     * @Groups({"quote_one"})
-     */
-    private $author_id;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=QuoteType::class, inversedBy="quote")
-     * @ORM\JoinColumn(nullable=false)
-     * @Groups({"quote_one"})
-     */
-    private $type_id;
-
-    /**
      * @ORM\Column(type="string", length=255)
      * @Groups({"quote_one"})
      */
     private $text;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Author::class, inversedBy="quotes")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $author;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=QuoteType::class, inversedBy="quotes")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $type;
+
+    /**
+     *  @Groups({"quote_one"})
+     */
+    private $authorName;
+
+    /**
+     *  @Groups({"quote_one"})
+     */
+    private $typeName;
+
+    public function getAuthorName() {
+        return $this->getAuthor()->getFirstName();
+    }
+
+    public function getTypeName() {
+        return $this->getType()->getName();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getAuthorId(): ?Author
-    {
-        return $this->author_id;
-    }
-
-    public function setAuthorId(?Author $author_id): self
-    {
-        $this->author_id = $author_id;
-
-        return $this;
-    }
-
-    public function getTypeId(): ?QuoteType
-    {
-        return $this->type_id;
-    }
-
-    public function setTypeId(?QuoteType $type_id): self
-    {
-        $this->type_id = $type_id;
-
-        return $this;
     }
 
     public function getText(): ?string
@@ -76,6 +68,30 @@ class Quote
     public function setText(string $text): self
     {
         $this->text = $text;
+
+        return $this;
+    }
+
+    public function getAuthor(): ?Author
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(?Author $author): self
+    {
+        $this->author = $author;
+
+        return $this;
+    }
+
+    public function getType(): ?QuoteType
+    {
+        return $this->type;
+    }
+
+    public function setType(?QuoteType $type): self
+    {
+        $this->type = $type;
 
         return $this;
     }

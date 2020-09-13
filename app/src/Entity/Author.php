@@ -34,13 +34,13 @@ class Author
     private $last_name;
 
     /**
-     * @ORM\OneToMany(targetEntity=Quote::class, mappedBy="author_id")
+     * @ORM\OneToMany(targetEntity=Quote::class, mappedBy="author")
      */
-    private $quote;
+    private $quotes;
 
     public function __construct()
     {
-        $this->quote = new ArrayCollection();
+        $this->quotes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -80,11 +80,19 @@ class Author
         return $this->quote;
     }
 
+    /**
+     * @return Collection|Quote[]
+     */
+    public function getQuotes(): Collection
+    {
+        return $this->quotes;
+    }
+
     public function addQuote(Quote $quote): self
     {
-        if (!$this->quote->contains($quote)) {
-            $this->quote[] = $quote;
-            $quote->setAuthorId($this);
+        if (!$this->quotes->contains($quote)) {
+            $this->quotes[] = $quote;
+            $quote->setAuthor($this);
         }
 
         return $this;
@@ -92,14 +100,15 @@ class Author
 
     public function removeQuote(Quote $quote): self
     {
-        if ($this->quote->contains($quote)) {
-            $this->quote->removeElement($quote);
+        if ($this->quotes->contains($quote)) {
+            $this->quotes->removeElement($quote);
             // set the owning side to null (unless already changed)
-            if ($quote->getAuthorId() === $this) {
-                $quote->setAuthorId(null);
+            if ($quote->getAuthor() === $this) {
+                $quote->setAuthor(null);
             }
         }
 
         return $this;
     }
+
 }

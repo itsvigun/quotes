@@ -28,13 +28,14 @@ class QuoteType
     private $name;
 
     /**
-     * @ORM\OneToMany(targetEntity=Quote::class, mappedBy="type_id")
+     * @ORM\OneToMany(targetEntity=Quote::class, mappedBy="type")
      */
-    private $quote;
+    private $quotes;
 
     public function __construct()
     {
         $this->quote = new ArrayCollection();
+        $this->quotes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -62,11 +63,19 @@ class QuoteType
         return $this->quote;
     }
 
+    /**
+     * @return Collection|Quote[]
+     */
+    public function getQuotes(): Collection
+    {
+        return $this->quotes;
+    }
+
     public function addQuote(Quote $quote): self
     {
-        if (!$this->quote->contains($quote)) {
-            $this->quote[] = $quote;
-            $quote->setTypeId($this);
+        if (!$this->quotes->contains($quote)) {
+            $this->quotes[] = $quote;
+            $quote->setType($this);
         }
 
         return $this;
@@ -74,11 +83,11 @@ class QuoteType
 
     public function removeQuote(Quote $quote): self
     {
-        if ($this->quote->contains($quote)) {
-            $this->quote->removeElement($quote);
+        if ($this->quotes->contains($quote)) {
+            $this->quotes->removeElement($quote);
             // set the owning side to null (unless already changed)
-            if ($quote->getTypeId() === $this) {
-                $quote->setTypeId(null);
+            if ($quote->getType() === $this) {
+                $quote->setType(null);
             }
         }
 
