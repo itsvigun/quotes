@@ -19,7 +19,7 @@ class QuotesTypeController extends AbstractController
     }
 
     /**
-     * @Route("/quote-types/", name="get_quoute_types", methods={"GET"})
+     * @Route("/quote-types", name="get_quoute_types", methods={"GET"})
      */
     public function getAll(SerializerInterface $serializer): JsonResponse
     {

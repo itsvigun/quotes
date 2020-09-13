@@ -19,7 +19,7 @@ class AuthorController extends AbstractController
     }
 
     /**
-     * @Route("/authors/", name="get_authors", methods={"GET"})
+     * @Route("/authors", name="get_authors", methods={"GET"})
      */
     public function getAll(SerializerInterface $serializer): JsonResponse
     {
